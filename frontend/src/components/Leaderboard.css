@@ -1,0 +1,40 @@
+.leaderboard {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .leaderboard h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff
+  }
+  
+  .leaderboard th, .leaderboard td {
+    padding: 10px;
+    text-align: left;
+    border-left: 1px solid #01d3d6;
+    border-right: 1px solid #01d3d6;
+    border-bottom: 1px solid #4c175a;
+  }
+  
+  .leaderboard th {
+    background-color: #01d3d6;
+    color: rgb(255, 255, 255);
+    border-top: 3px;
+    border-bottom: 3px;
+  }
+  
+  .leaderboard tr{
+    background-color: #9a52a3;
+  }
+  
+  .leaderboard tr:hover {
+    background-color: #4c175a;
+    border: 3px solid #01d3d6;
+    font-weight: bold;
+  }
