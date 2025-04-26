@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Card.css';
 
-function Card() { 
+function Card({ onGameOver }) { 
     
     //Mock database for questions
     const questionsDatabase = [
@@ -54,6 +54,8 @@ function Card() {
     }, []);
 
     const handleAnswerClick = (choice) => {
+        if (answer) return;
+
         setAnswer(choice);
         if (choice === correctAnswer) {
             setCorrect(true);
@@ -63,6 +65,9 @@ function Card() {
             }, 2000); 
         } else {
             setCorrect(false);
+            setTimeout(() => {
+                onGameOver(); // Return to menu when it's wrong
+            }, 2000);
         }
         //console.log(`You clicked ${choice} -- The correct answer was ${correctAnswer}, meaning you were ${correct}`); //Logging
     };
@@ -71,10 +76,26 @@ function Card() {
         <div className="card">
         <h2 className="card-title">Question</h2>
         <p className="card-content">{question}</p>
-        <button onClick={() => handleAnswerClick(choices[0])}>{choices[0]}</button>
-        <button onClick={() => handleAnswerClick(choices[1])}>{choices[1]}</button>
-        <button onClick={() => handleAnswerClick(choices[2])}>{choices[2]}</button>
-        <button onClick={() => handleAnswerClick(choices[3])}>{choices[3]}</button>
+        <button 
+                onClick={() => handleAnswerClick(choices[0])}
+                disabled={answer !== null} // Disable the button after an answer is selected
+            >{choices[0]}
+        </button>
+        <button 
+                onClick={() => handleAnswerClick(choices[1])}
+                disabled={answer !== null}
+            >{choices[1]}
+        </button>
+        <button 
+                onClick={() => handleAnswerClick(choices[2])}
+                disabled={answer !== null}
+            >{choices[2]}
+        </button>
+        <button 
+                onClick={() => handleAnswerClick(choices[3])}
+                disabled={answer !== null}
+            >{choices[3]}
+        </button>
 
         {answer && ( // If answer is true, the user has answered, so render the feedback. Else, render nothing.
             <p className="feedback">
