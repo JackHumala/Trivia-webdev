@@ -1,7 +1,5 @@
-// src/App.js
-import React, { useState } from 'react';
 import './App.css';
-
+import React, { useState } from 'react';
 import MainMenu    from './Components/MainMenu/MainMenu';
 import Card        from './Components/Card/Card';
 import Leaderboard from './Components/Leaderboard';
