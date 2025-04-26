@@ -39,8 +39,6 @@ function Card({ onGameOver }) {
     const [choices, setChoices] = useState([]); // State for answer choices
     const [correctAnswer, setCorrectAnswer] = useState(""); // State for the correct answer
 
-    const [score, setScore] = useState(0); // Score tracker
-
     const newQuestion = () => {
         const randomIndex = Math.floor(Math.random() * questionsDatabase.length); //Get a new random question
         setQuestion(questionsDatabase[randomIndex][0]); //Set the new question
@@ -61,7 +59,6 @@ function Card({ onGameOver }) {
         setAnswer(choice);
         if (choice === correctAnswer) {
             setCorrect(true);
-            setScore(prevScore => prevScore + 100); //Add 100 points if correct answer
             // Load a new question after 2 seconds if the answer is correct
             setTimeout(() => {
                 newQuestion();
@@ -82,26 +79,22 @@ function Card({ onGameOver }) {
         <button 
                 onClick={() => handleAnswerClick(choices[0])}
                 disabled={answer !== null} // Disable the button after an answer is selected
-            >
-            {choices[0]}
+            >{choices[0]}
         </button>
         <button 
                 onClick={() => handleAnswerClick(choices[1])}
                 disabled={answer !== null}
-            >
-            {choices[1]}
+            >{choices[1]}
         </button>
         <button 
                 onClick={() => handleAnswerClick(choices[2])}
                 disabled={answer !== null}
-            >
-            {choices[2]}
+            >{choices[2]}
         </button>
         <button 
                 onClick={() => handleAnswerClick(choices[3])}
                 disabled={answer !== null}
-            >
-            {choices[3]}
+            >{choices[3]}
         </button>
 
         {answer && ( // If answer is true, the user has answered, so render the feedback. Else, render nothing.
