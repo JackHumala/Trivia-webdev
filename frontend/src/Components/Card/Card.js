@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Card.css';
 
-function Card({ onGameOver }) { 
+function Card({ score, setScore, onGameOver }) {
     
     //Mock database for questions
     const questionsDatabase = [
@@ -59,6 +59,7 @@ function Card({ onGameOver }) {
         setAnswer(choice);
         if (choice === correctAnswer) {
             setCorrect(true);
+            setScore(score + 1); // Increment score if the answer is correct
             // Load a new question after 2 seconds if the answer is correct
             setTimeout(() => {
                 newQuestion();
