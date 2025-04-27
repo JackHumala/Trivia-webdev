@@ -1,44 +1,55 @@
 import React, { useState } from 'react';
-import Card from '../Card/Card';
-import Score from '../Score/Score';
+import MainMenu    from '../MainMenu/MainMenu';
+import Card        from '../Card/Card';
+import Leaderboard from '../Leaderboard/Leaderboard';
 import LeaderboardEntry from '../LeaderboardEntry/LeaderboardEntry';
-import axios from 'axios';
-
 
 function App() {
+  
+  const [view, setView] = useState('menu');
   const [score, setScore] = useState(0); // State for game score
-  const [isGameOver, setIsGameOver] = useState(false); // State for game status
 
-
-  const handleGameOver = () => {
-    setIsGameOver(true);
-  };
-
-  const handleSubmit = async (name, score) => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/leaderboard', {
-        name,
-        score,
-      });
-      console.log('Score submitted successfully:', response.data);
-    } 
-    catch (error) {
-      if (error.response) {
-        console.error('Error submitting score:', error.response.data);
-      } else {
-        console.error('Error:', error.message);
-      }
-    }
-  };
+  const startGame       = () => setView('game');
+  const showLeaderboard = () => setView('leaderboard');
+  const backToMenu      = () => setView('menu');
+  const gameOver        = () => setView('gameover');
+  
+  const resetScore = () => setScore(0);
 
   return (
-    <div className="app">
-      <Score score={score} />
-      {isGameOver ? (
-        <LeaderboardEntry score={score} onSubmit={handleSubmit} /> // Render the LeaderboardEntry component when the game is over
-      ) : (
-        <Card score={score} setScore={setScore} onGameOver={handleGameOver} />
+    <div className="App">
+      {view === 'menu' && (
+        <MainMenu
+          onStart={startGame}
+          onViewLeaderboard={showLeaderboard}
+        />
       )}
+
+      {view === 'game' && (
+        <>
+          <button className="back-btn" onClick={backToMenu}>
+            ← Back to Menu
+          </button>
+          <score className="score">Score: {score}</score>
+          <Card score={score} setScore={setScore} onGameOver={gameOver} />
+        </>
+      )}
+
+      {view === 'leaderboard' && (
+        <>
+          <button className="back-btn" onClick={backToMenu}>
+            ← Back to Menu
+          </button>
+          <Leaderboard />
+        </>
+      )}
+
+      {view === 'gameover' && (
+        <>
+          <LeaderboardEntry score={score} onViewLeaderboard={showLeaderboard} resetScore={resetScore}/>
+        </>
+      )}
+
     </div>
   );
 }
