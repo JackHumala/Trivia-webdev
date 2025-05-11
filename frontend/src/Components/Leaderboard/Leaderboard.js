@@ -62,7 +62,7 @@
 
     if (loading) return <div>Loading leaderboard...</div>;
     return (
-      <div className="leaderboard">
+      <div className="leaderboard glass">
         <h2>Trivia Time Leaderboard</h2>
 
         <form onSubmit={handleSubmit} className="score-form">
@@ -97,7 +97,9 @@
           </thead>
           <tbody>
             {scores.map((item, idx) => (
-              <tr key={item._id}>
+              <tr key={item._id} className={
+                idx === 0 ? 'top-1' : idx === 1 ? 'top-2' : idx === 2 ? 'top-3' : ''
+              }>
                 <td>{idx + 1}</td>
                 <td>{item.name}</td>
                 <td>{item.score}</td>

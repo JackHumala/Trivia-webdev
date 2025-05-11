@@ -16,6 +16,11 @@ function App() {
   
   const resetScore = () => setScore(0);
 
+  const exitGame = () => {
+    resetScore();
+    backToMenu();
+  };
+
   return (
     <div className="App">
       {view === 'menu' && (
@@ -27,9 +32,14 @@ function App() {
 
       {view === 'game' && (
         <>
-          <button className="back-btn" onClick={backToMenu}>
-            ← Back to Menu
-          </button>
+          <div className="game-controls">
+            <button className="back-btn" onClick={backToMenu}>
+              ← Back to Menu
+            </button>
+            <button className="exit-btn" onClick={exitGame}>
+              Exit Game
+            </button>
+          </div>
           <score className="score">Score: {score}</score>
           <Card score={score} setScore={setScore} onGameOver={gameOver} />
         </>
