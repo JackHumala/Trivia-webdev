@@ -85,22 +85,6 @@ def get_questions():
 
     return jsonify(formatted_questions), 200
 
-@app.route('/api/validate', methods=['POST'])
-def validate_answer():
-    data = request.get_json(force=True)
-    question_id = data.get("question_id")
-    selected_choice = data.get("selected")
-
-    if not question_id or not selected_choice:
-        return jsonify({"error": "Missing question_id or selected"}), 400
-
-    question = questions_collection.find_one({"_id": ObjectId(question_id)})
-    if not question:
-        return jsonify({"error": "Question not found"}), 404
-
-    is_correct = question["answer"] == selected_choice
-    return jsonify({"correct": is_correct}), 200
-
 if __name__ == '__main__':
     # If you still see other services on 5000, switch to 5001 here and adjust your React proxy
     app.run(port=5000, debug=True)
