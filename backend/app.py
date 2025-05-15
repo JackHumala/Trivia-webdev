@@ -23,7 +23,7 @@ CORS(
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client.triviatime
 leaderboard_collection = db.scores
-questions_collection = db.temp_questions #USING TEMP_QUESTIONS, CHANGE TO QUESTIONS WHEN DB IS DONE
+questions_collection = db.questions
 
 @app.route('/api/leaderboard', methods=['GET'])
 def get_leaderboard():
