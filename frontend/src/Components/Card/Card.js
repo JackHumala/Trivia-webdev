@@ -1,57 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Card.css';
 
 function Card({ score, setScore, onGameOver }) {
-    
-    //Mock database for questions
-    const questionsDatabase = [
-        [
-            "What is the capital of France?", // Question
-            ["Paris", "London", "Berlin", "Madrid"], // Answer choices
-            "Paris" // Correct answer
-        ],
-        [
-            "Which planet is known as the Red Planet?",
-            ["Earth", "Mars", "Jupiter", "Venus"],
-            "Mars"
-        ],
-        [
-            "What is the largest mammal in the world?",
-            ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
-            "Blue Whale"
-        ],
-        [
-            "Who wrote 'To Kill a Mockingbird'?",
-            ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Mark Twain"],
-            "Harper Lee"
-        ],
-        [
-            "What is the chemical symbol for water?",
-            ["H2O", "O2", "CO2", "NaCl"],
-            "H2O"
-        ]
-    ];
 
     // State variables
-    const [answer, setAnswer] = useState(null); // State for user's answer
-    const [correct, setCorrect] = useState(false); // State for correctness of answer
-    const [question, setQuestion] = useState(""); // State for trivia question
-    const [choices, setChoices] = useState([]); // State for answer choices
-    const [correctAnswer, setCorrectAnswer] = useState(""); // State for the correct answer
+    const [answer, setAnswer] = useState(null);
+    const [correct, setCorrect] = useState(false);
+    const [question, setQuestion] = useState("");
+    const [choices, setChoices] = useState([]);
+    const [correctAnswer, setCorrectAnswer] = useState("");
+    const [questionsDB, setQuestionsDB] = useState([]);
 
-    const newQuestion = () => {
-        const randomIndex = Math.floor(Math.random() * questionsDatabase.length); //Get a new random question
-        setQuestion(questionsDatabase[randomIndex][0]); //Set the new question
-        setChoices(questionsDatabase[randomIndex][1]); //Set the new choices
-        setCorrectAnswer(questionsDatabase[randomIndex][2]); //Set the new correct answer
-        setAnswer(null); //Reset the answer state
-        setCorrect(false); //Reset the correctness state
+    //fetch questions
+    useEffect(() => {
+    fetch('/api/questions')
+        .then(res => res.json())
+        .then(data => {
+            setQuestionsDB(data);
+        })
+        .catch(err => console.error('Error fetching questions:', err));
+    }, []);
+
+    //state variable to prevent 2 questions loading on startup
+    const [questionLoaded, setQuestionLoaded] = useState(false);
+
+    useEffect(() => {
+        if (questionsDB.length > 0 && !questionLoaded) {
+            loadNewQuestion(questionsDB);
+            setQuestionLoaded(true); //prevent multiple calls
+        }
+    }, [questionsDB, questionLoaded]);
+
+    const shuffleArray = (arr) => {
+        return arr.sort(() => Math.random() - 0.5);
     };
 
-    // Load the first question when the component mounts
-    React.useEffect(() => {
-        newQuestion();
-    }, []);
+    const loadNewQuestion = (data = questionsDB) => {
+        const randomQ = data[Math.floor(Math.random() * data.length)];
+        const allChoices = shuffleArray([...randomQ.choices, randomQ.answer]); //Combine and shuffle choices and answer
+        setQuestion(randomQ.question);
+        setChoices(allChoices);
+        setCorrectAnswer(randomQ.answer);
+        setAnswer(null);
+        setCorrect(false);
+    };
 
     const handleAnswerClick = (choice) => {
         if (answer) return;
@@ -59,51 +51,30 @@ function Card({ score, setScore, onGameOver }) {
         setAnswer(choice);
         if (choice === correctAnswer) {
             setCorrect(true);
-            setScore(score + 1); // Increment score if the answer is correct
-            // Load a new question after 2 seconds if the answer is correct
-            setTimeout(() => {
-                newQuestion();
-            }, 2000); 
+            setScore(score + 1);
+            setTimeout(() => loadNewQuestion(), 2000);
         } else {
             setCorrect(false);
-            setTimeout(() => {
-                onGameOver(); // Return to menu when it's wrong
-            }, 2000);
+            setTimeout(() => onGameOver(), 2000);
         }
-        //console.log(`You clicked ${choice} -- The correct answer was ${correctAnswer}, meaning you were ${correct}`); //Logging
     };
 
     return (
         <div className="card">
-        <h2 className="card-title">Question</h2>
-        <p className="card-content">{question}</p>
-        <button 
-                onClick={() => handleAnswerClick(choices[0])}
-                disabled={answer !== null} // Disable the button after an answer is selected
-            >{choices[0]}
-        </button>
-        <button 
-                onClick={() => handleAnswerClick(choices[1])}
-                disabled={answer !== null}
-            >{choices[1]}
-        </button>
-        <button 
-                onClick={() => handleAnswerClick(choices[2])}
-                disabled={answer !== null}
-            >{choices[2]}
-        </button>
-        <button 
-                onClick={() => handleAnswerClick(choices[3])}
-                disabled={answer !== null}
-            >{choices[3]}
-        </button>
+            <h2 className="card-title">Question</h2>
+            <p className="card-content">{question}</p>
 
-        {answer && ( // If answer is true, the user has answered, so render the feedback. Else, render nothing.
-            <p className="feedback">
-                {correct ? "Correct! Get ready for the next question..." : "Wrong answer! Game over!"}
-            </p>
-        )}
+            {choices.map((c, i) => (
+                <button key={i} onClick={() => handleAnswerClick(c)} disabled={answer !== null}>
+                    {c}
+                </button>
+            ))}
 
+            {answer && (
+                <p className="feedback">
+                    {correct ? "Correct! Get ready for the next question..." : "Wrong answer! Game over!"}
+                </p>
+            )}
         </div>
     );
 }
