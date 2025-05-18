@@ -65,7 +65,7 @@
       <div className="leaderboard glass">
         <h2>Trivia Time Leaderboard</h2>
 
-        <form onSubmit={handleSubmit} className="score-form">
+        {/* <form onSubmit={handleSubmit} className="score-form">
           <input
             type="text"
             placeholder="Your Name"
@@ -85,7 +85,7 @@
           </button>
         </form>
 
-        {error && <div className="error">Error: {error}</div>}
+        {error && <div className="error">Error: {error}</div>} */}
 
         <table>
           <thead>
