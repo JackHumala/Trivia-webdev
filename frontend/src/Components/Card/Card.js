@@ -16,6 +16,7 @@ function Card({ score, setScore, onGameOver }) {
     fetch(`${process.env.REACT_APP_API_URL}/api/questions`)
         .then(res => res.json())
         .then(data => {
+            console.log("API URL:", process.env.REACT_APP_API_URL);
             setQuestionsDB(data);
         })
         .catch(err => console.error('Error fetching questions:', err));
