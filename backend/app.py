@@ -15,9 +15,13 @@ app = Flask(__name__)
 # Only allow your React dev server origin on /api/* endpoints
 CORS(
     app,
-    resources={r"/api/*": {"origins": ["http://localhost:3000", "https://eleigit.github.io/Trivia-webdev/"]}},
+    resources={r"/api/*": {"origins": [
+        "http://localhost:3000",
+        "https://eleigit.github.io"
+    ]}},
     supports_credentials=True
 )
+
 
 # Connect to MongoDB
 client = MongoClient(os.getenv("MONGO_URI"))
