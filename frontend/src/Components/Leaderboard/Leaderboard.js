@@ -64,7 +64,7 @@
     return (
       <div className="leaderboard glass">
         <h2>Trivia Time Leaderboard</h2>
-
+      
         {error && <div className="error">Error: {error}</div>}
 
         <table>
