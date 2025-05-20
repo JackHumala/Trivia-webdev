@@ -13,7 +13,7 @@ function Card({ score, setScore, onGameOver }) {
 
     //fetch questions
     useEffect(() => {
-    fetch('/api/questions')
+    fetch(`${process.env.REACT_APP_API_URL}/api/questions`)
         .then(res => res.json())
         .then(data => {
             setQuestionsDB(data);

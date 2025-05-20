@@ -15,7 +15,7 @@ app = Flask(__name__)
 # Only allow your React dev server origin on /api/* endpoints
 CORS(
     app,
-    resources={r"/api/*": {"origins": "http://localhost:3000"}},
+    resources={r"/api/*": {"origins": ["http://localhost:3000", "https://eleigit.github.io/Trivia-webdev/"]}},
     supports_credentials=True
 )
 
@@ -86,5 +86,5 @@ def get_questions():
     return jsonify(formatted_questions), 200
 
 if __name__ == '__main__':
-    # If you still see other services on 5000, switch to 5001 here and adjust your React proxy
-    app.run(port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)

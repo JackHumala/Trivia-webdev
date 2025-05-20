@@ -16,7 +16,7 @@ function LeaderboardEntry({ score, onViewLeaderboard, resetScore, onBackToMenu }
         setSubmitting(true);
         setError('');
         try {
-            const res = await fetch('/api/leaderboard', {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/leaderboard`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: name.trim(), score: Number(score) }),
