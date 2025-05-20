@@ -64,28 +64,8 @@
     return (
       <div className="leaderboard glass">
         <h2>Trivia Time Leaderboard</h2>
-
-        {/* <form onSubmit={handleSubmit} className="score-form">
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Your Score"
-            value={score}
-            onChange={e => setScore(e.target.value)}
-            required
-          />
-          <button type="submit" disabled={submitting}>
-            {submitting ? 'Submitting...' : 'Add Score'}
-          </button>
-        </form>
-
-        {error && <div className="error">Error: {error}</div>} */}
+      
+        {error && <div className="error">Error: {error}</div>}
 
         <table>
           <thead>
