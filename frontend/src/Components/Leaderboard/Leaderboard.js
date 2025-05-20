@@ -15,7 +15,7 @@
       setLoading(true);
       setError('');
       try {
-        const res = await fetch('/api/leaderboard');
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/leaderboard`);
         if (!res.ok) throw new Error(`Fetch error: ${res.statusText}`);
         const data = await res.json();
         setScores(data);
@@ -41,7 +41,7 @@
       setSubmitting(true);
       setError('');
       try {
-        const res = await fetch('/api/leaderboard', {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/leaderboard`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: name.trim(), score: Number(score) }),
